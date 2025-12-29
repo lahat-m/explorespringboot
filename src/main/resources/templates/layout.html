@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Kuniel Blog</title>
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">-->
+    <link rel="stylesheet" th:href="@{/webjars/bulma/css/bulma.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" th:href="@{/}" aria-label="Home" style="cursor: pointer;">
+                <img th:src="@{/kuniel_brand_logo.svg}" alt="Kuniel" width="100" loading="lazy">
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarMain" class="navbar-menu">
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a class="button is-light" th:href="@{/login}">
+                            Log in
+                        </a>
+                    </div>
+                </div>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            About
+                        </a>
+                        <a class="navbar-item is-selected">
+                            Jobs
+                        </a>
+                        <a class="navbar-item">
+                            Contact
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="wrapper" class="container">
+        <div class="fixed-grid has-12-cols">
+            <div class="grid">
+                <div class="cell is-col-span-12">
+                     <div layout:fragment="content">
+<!--                         page content goes here-->
+                     </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="has-text-centered">
+            <p>
+                <a href="https://kuniel.com">Kuniel</a>
+                <strong>&copy; <span th:text="${#dates.year(#dates.createNow())}">2025</span></strong>
+            </p>
+        </div>
+    </footer>
+</header>
+</body>
+</html>

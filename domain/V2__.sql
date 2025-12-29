@@ -1,0 +1,13 @@
+CREATE SEQUENCE IF NOT EXISTS user_id_seq START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE users
+(
+    id         BIGINT       NOT NULL,
+    email      VARCHAR(255) NOT NULL,
+    password   VARCHAR(255) NOT NULL,
+    name       VARCHAR(255) NOT NULL,
+    role       VARCHAR(20)  NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITHOUT TIME ZONE,
+    CONSTRAINT pk_users PRIMARY KEY (id)
+);

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${post.title}">Post Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="section">
+        <article>
+            <h1 class="title" th:text="${post.title}">Post Title</h1>
+            <p class="subtitle is-6">
+                By <strong th:text="${post.createdBy.name}">Author</strong> on 
+                <time th:datetime="${post.createdAt}" th:text="${#temporals.format(post.createdAt, 'MMMM dd, yyyy')}">Date</time>
+            </p>
+            
+            <div class="content" th:utext="${post.content}">
+                Post content goes here...
+            </div>
+        </article>
+        
+        <hr>
+        
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h2 class="title is-4">Comments</h2>
+            
+            <!-- Comment Form -->
+            <div class="box">
+                <form id="commentForm">
+                    <input type="hidden" id="postId" th:value="${post.id}">
+                    <div class="field">
+                        <label class="label">Name</label>
+                        <div class="control">
+                            <input class="input" type="text" id="name" name="name" placeholder="Your name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control">
+                            <input class="input" type="email" id="email" name="email" placeholder="Your email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">Comment</label>
+                        <div class="control">
+                            <textarea class="textarea" id="content" name="content" placeholder="Your comment" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-primary" type="submit">Submit Comment</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Comments List -->
+            <div class="comments-list" id="commentsList">
+                <div class="box" th:each="comment : ${comments}">
+                    <article class="media">
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong th:text="${comment.name}">Name</strong>
+                                    <small th:text="${comment.email}">email@example.com</small>
+                                    <br>
+                                    <small th:text="${#temporals.format(comment.createdAt, 'MMM dd, yyyy HH:mm')}">Date</small>
+                                    <br>
+                                    <span th:text="${comment.content}">Comment content</span>
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script th:inline="javascript">
+        document.getElementById('commentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const postId = document.getElementById('postId').value;
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                content: document.getElementById('content').value
+            };
+            
+            try {
+                const response = await fetch(`/api/posts/${postId}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    const error = await response.json();
+                    alert('Error: ' + error.detail);
+                }
+            } catch (error) {
+                alert('Error submitting comment: ' + error.message);
+            }
+        });
+    </script>
+</div>
+</body>
+</html>
